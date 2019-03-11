@@ -7,6 +7,7 @@ var time;
 var firstTime = "03:30";
 var firstTimeConverted;
 var currentTime;
+var tFrequency =3;
 var tRemainder;
 var tMinutesTillTrain;
 var nextTrain;
@@ -57,7 +58,7 @@ $(document).ready(function () {
       name: name,
       destination: destination,
       firstTrainTime: firstTrainTime,
-      frequency: frequency
+     frequency: frequency
     });
 
     clear();
@@ -98,16 +99,17 @@ $(document).ready(function () {
     console.log("DIFFERENCE IN TIME: " + diffTime);
 
     // Time apart (remainder)
-    tRemainder = diffTime % frequency;
+    tRemainder = diffTime % tFrequency;
     console.log(tRemainder);
 
     // Minute Until Train
-    tMinutesTillTrain = frequency - tRemainder;
+    tMinutesTillTrain = tFrequency - tRemainder;
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
     // Next Train
     nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("dddd, MMMM Do YYYY, h:mm:ss a"));
+
 
     // Handle the errors
   }, function (errorObject) {
