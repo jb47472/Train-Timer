@@ -6,7 +6,7 @@ var time;
 $(document).ready(function () {
 
   function runningClock() {
-    time = moment().format("hh:mm:ss A");
+    time = moment().format("hh:mm A");
     $("#time").text(time);
   }
 
@@ -40,6 +40,7 @@ $(document).ready(function () {
     name = $("#trainNameInput").val().trim();
     destination = $("#destinationInput").val().trim();
     firstTrainTime = $("#firstTrainTimeInput").val().trim();
+    console.log(firstTrainTime);
     frequency = $("#frequencyInput").val().trim();
 
     // Code for "Setting values in the database"
@@ -68,32 +69,31 @@ $(document).ready(function () {
     console.log(frequency);
 
 
-    var firstTime = "03:30";
+    // var firstTime = "03:30";
 
-    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
 
     // Current Time
-    var currentTime = moment();
-    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+    var currentTime = moment().format("hh:mm");
+    console.log("CURRENT TIME: " + currentTime);
 
     // Difference between the times
     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
     console.log("DIFFERENCE IN TIME: " + diffTime);
 
-    var tFrequency = 3;
 
     // Time apart (remainder)
-    var tRemainder = diffTime % tFrequency;
+    var tRemainder = diffTime % frequency;
     console.log(tRemainder);
 
     // Minute Until Train
-    var tMinutesTillTrain = tFrequency - tRemainder;
+    var tMinutesTillTrain = frequency - tRemainder;
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("dddd, MMMM Do YYYY, h:mm:ss a"));
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("dddd, MMMM Do YYYY, hh:mm:ss a"));
 
 
     // Change the HTML to reflect

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    /* Set the size of the div element that contains the map */
+    #map {
+      height: 400px;
+      /* The height is 400 pixels */
+      width: 100%;
+      /* The width is the width of the web page */
+    }
+  </style>
+</head>
+
+<body>
+  <h3>My Google Maps Demo</h3>
+
+  <!-- <form id="Submit-Beer">
+    Submit Beer:<br>
+    <input type="text" name="beer">
+    <br>
+    <input type="submit" value="Submit">
+  </form>  -->
+  <!--The div element for the map -->
+  <div id="map"></div>
+
+  <script>
+    // Initialize and add the map
+    function initMap() {
+      console.log("YO!");
+
+      // The location of kansas
+      var breweryMapData = { lat:39.0119, lng:-98.4842};
+      // The map, centered at kansas
+      var map = new google.maps.Map(
+        document.getElementById('map'), { zoom: 4, center: breweryMapData });
+      // The marker, positioned at breweryMapData
+      // var marker = new google.maps.Marker({ position: breweryMapData, map: map });
+    }
+  </script>
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=
+    AIzaSyDBBx7uftwsmJHl5cTRUg41_55aU1iglxI
+    &callback=initMap">
+    </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+  <script>
+    var beerName;
+    var brewery;
+    var brewLat = 0;
+    var brewLng = 0;
+    var coords = [];
+    var glassware;
+    var abv;
+    var style;
+    var ibu;
+    var website;
+
+
+
+    function callBeer(beerType) {
+
+      var queryURL = "https://cors-anywhere.herokuapp.com/https://api.brewerydb.com/v2/search";
+      var search = $("#beer-search").val();
+
+      $.ajax({
+        url: queryURL,
+        method: "GET",
+        data: {
+          q: beerType,
+          type: "beer",
+          withBreweries: "Y",
+          withLocations: "Y",
+          key: "d06f72cfa4d269c5b3840f2ed2b5988c"
+        }
+      }).then(function (response) {
+        console.log(response)
+        var result = response.data;
+        var map = new google.maps.Map(
+            document.getElementById('map'), { 
+              zoom: 4, 
+              center: {lat: result[0].breweries[0].locations[0].latitude,lng:result[0].breweries[0].locations[0].longitude} });
+
+
+        for (var i = 0; i <= 10; i++) {
+          beerName = result[i].name;
+          brewery = result[i].breweries[0].name;
+          brewLat = result[i].breweries[0].locations[0].latitude;
+          brewLng = result[i].breweries[0].locations[0].longitude;
+          abv = result[i].abv;
+          style = result[i].style.name;
+          ibu = result[i].ibu;
+          website = result[i].breweries[0].website;
+
+        
+            // The location of charlotte
+            // var breweryMapData = { lat: 35.227085, lng: -80.843124 };
+            // The map, centered at charlotte
+           
+            // The marker, positioned at breweryMapData
+            var marker = new google.maps.Marker({ position: {lat:brewLat, lng:brewLng}, map: map });
+         
+        }
+
+
+      });
+
+    };
+
+    //on Submit
+// $('#Submit-Beer').submit(function(e) {
+//     e.preventDefault();
+//     // get all the inputs into an array.
+//     var $inputs = $('#Submit-Beer :input');
+//     console.log($inputs);
+    
+//get the value, then insert value in function
+    callBeer("Wake Up Porter");
+    console.log("What Up?");
+    
+
+// });   
+
+
+
+
+  </script>
+  
+
+</body>
+
+</html>
